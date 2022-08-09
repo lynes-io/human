@@ -1,9 +1,6 @@
 /// <reference types="@webgpu/types/dist" />
 /// <reference types="offscreencanvas" />
 
-/** meta-function that performs draw for: canvas, face, body, hand */
-declare function all(inCanvas: AnyCanvas, result: Result, drawOptions?: Partial<DrawOptions>): Promise<[void, void, void, void, void] | null>;
-
 /** Defines all possible canvas types */
 export declare type AnyCanvas = HTMLCanvasElement | OffscreenCanvas;
 
@@ -26,9 +23,6 @@ declare interface ArrayMap {
 
 /** Possible TensorFlow backends */
 export declare type BackendType = ['cpu', 'wasm', 'webgl', 'humangl', 'tensorflow', 'webgpu'];
-
-/** draw detected bodies */
-declare function body(inCanvas: AnyCanvas, result: Array<BodyResult>, drawOptions?: Partial<DrawOptions>): Promise<void>;
 
 export declare type BodyAnnotation = BodyAnnotationBlazePose | BodyAnnotationEfficientPose;
 
@@ -138,9 +132,6 @@ declare function browserFiles(files: File[]): IOHandler;
  * @param loadOptions
  */
 declare function browserHTTPRequest(path: string, loadOptions?: LoadOptions): IOHandler;
-
-/** draw processed canvas */
-declare function canvas(input: AnyCanvas | HTMLImageElement | HTMLVideoElement, output: AnyCanvas): Promise<void>;
 
 /**
  * Concatenate a number of ArrayBuffers into one.
@@ -335,21 +326,6 @@ export declare type Descriptor = Array<number>;
  */
 declare function distance(descriptor1: Descriptor, descriptor2: Descriptor, options?: MatchOptions): number;
 
-declare namespace draw {
-    export {
-        person,
-        canvas,
-        all,
-        options,
-        face,
-        body,
-        hand,
-        object,
-        gesture
-    }
-}
-export { draw }
-
 /** Draw Options
  * - Accessed via `human.draw.options` or provided per each draw method as the drawOptions optional parameter
  */
@@ -497,9 +473,6 @@ export declare type Events = 'create' | 'load' | 'image' | 'result' | 'warmup' |
 
 /** Defines possible externally defined canvas */
 export declare type ExternalCanvas = typeof env.Canvas;
-
-/** draw detected faces */
-declare function face(inCanvas: AnyCanvas, result: Array<FaceResult>, drawOptions?: Partial<DrawOptions>): Promise<void>;
 
 /** Anti-spoofing part of face configuration */
 export declare interface FaceAntiSpoofConfig extends GenericConfig {
@@ -769,9 +742,6 @@ export declare interface GenericConfig {
     skipTime: number;
 }
 
-/** draw detected gestures */
-declare function gesture(inCanvas: AnyCanvas, result: Array<GestureResult>, drawOptions?: Partial<DrawOptions>): Promise<void>;
-
 /** Controlls gesture detection */
 export declare interface GestureConfig {
     /** is gesture detection enabled? */
@@ -1027,9 +997,6 @@ export declare class GraphModel<ModelURL extends Url = string | io.IOHandler> im
     dispose(): void;
 }
 
-/** draw detected hands */
-declare function hand(inCanvas: AnyCanvas, result: Array<HandResult>, drawOptions?: Partial<DrawOptions>): Promise<void>;
-
 /** Configures all hand detection specific options */
 export declare interface HandConfig extends GenericConfig {
     /** should hand rotation correction be performed after hand detection? */
@@ -1196,22 +1163,6 @@ declare class Human {
     tf: any;
     /** Object containing environment information used for diagnostics */
     env: Env;
-    /** Draw helper classes that can draw detected objects on canvas using specified draw
-     * - canvas: draws input to canvas
-     * - options: are global settings for all draw operations, can be overriden for each draw method {@link DrawOptions}
-     * - face, body, hand, gesture, object, person: draws detected results as overlays on canvas
-     */
-    draw: {
-        canvas: typeof draw.canvas;
-        face: typeof draw.face;
-        body: typeof draw.body;
-        hand: typeof draw.hand;
-        gesture: typeof draw.gesture;
-        object: typeof draw.object;
-        person: typeof draw.person;
-        all: typeof draw.all;
-        options: DrawOptions;
-    };
     /** Currently loaded models
      * @internal
      * {@link Models}
@@ -1267,27 +1218,6 @@ declare class Human {
         tensor: Tensor<Rank> | null;
         canvas: AnyCanvas | null;
     }>;
-    /** Segmentation method takes any input and returns processed canvas with body segmentation
-     *  - Segmentation is not triggered as part of detect process
-     * @param input - {@link Input}
-     * @param background - {@link Input}
-     *  - Optional parameter background is used to fill the background with specific input
-     *  Returns:
-     *  - `data` as raw data array with per-pixel segmentation values
-     *  - `canvas` as canvas which is input image filtered with segementation data and optionally merged with background image. canvas alpha values are set to segmentation values for easy merging
-     *  - `alpha` as grayscale canvas that represents segmentation alpha values
-     */
-    segmentation(input: Input, background?: Input): Promise<{
-        data: number[] | Tensor;
-        canvas: AnyCanvas | null;
-        alpha: AnyCanvas | null;
-    }>;
-    /** Enhance method performs additional enhacements to face image previously detected for futher processing
-     *
-     * @param input - Tensor as provided in human.result.face[n].tensor
-     * @returns Tensor
-     */
-    enhance(input: Tensor): Tensor | null;
     /** Compare two input tensors for pixel simmilarity
      * - use `human.image` to process any valid input and get a tensor that can be used for compare
      * - when passing manually generated tensors:
@@ -1997,9 +1927,6 @@ declare type NamedTensorsMap = {
 
 declare type NumericDataType = 'float32' | 'int32' | 'bool' | 'complex64';
 
-/** draw detected objects */
-declare function object(inCanvas: AnyCanvas, result: Array<ObjectResult>, drawOptions?: Partial<DrawOptions>): Promise<void>;
-
 /** Configures all object detection specific options */
 export declare interface ObjectConfig extends GenericConfig {
     /** minimum confidence for a detected objects before results are discarded */
@@ -2036,12 +1963,6 @@ export declare type ObjectType = 'person' | 'bicycle' | 'car' | 'motorcycle' | '
  * much of the action has completed.
  */
 declare type OnProgressCallback = (fraction: number) => void;
-
-/** currently set draw options {@link DrawOptions} */
-declare const options: DrawOptions;
-
-/** draw combined person results instead of individual detection result objects */
-declare function person(inCanvas: AnyCanvas, result: Array<PersonResult>, drawOptions?: Partial<DrawOptions>): Promise<void>;
 
 /** Person getter
  * - Triggers combining all individual results into a virtual person object

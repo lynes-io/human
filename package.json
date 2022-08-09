@@ -53,11 +53,7 @@
     "tfjs",
     "tensorflow"
   ],
-  "optionalDependencies": {
-    "canvas": "^2.9.3",
-    "node-fetch": "^3.2.10",
-    "node-webcam": "^0.8.1"
-  },
+  "optionalDependencies": {},
   "devDependencies": {
     "@microsoft/api-extractor": "^7.29.0",
     "@tensorflow/tfjs": "^3.19.0",
@@ -78,7 +74,6 @@
     "@typescript-eslint/parser": "^5.32.0",
     "@vladmandic/build": "^0.7.8",
     "@vladmandic/pilogger": "^0.4.6",
-    "@vladmandic/tfjs": "github:vladmandic/tfjs",
     "@webgpu/types": "^0.1.21",
     "esbuild": "^0.14.54",
     "eslint": "8.21.0",
