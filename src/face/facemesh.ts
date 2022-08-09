@@ -58,6 +58,8 @@ export async function predict(input: Tensor, config: Config): Promise<FaceResult
       annotations: {} as Record<FaceLandmark, Point[]>,
     };
 
+    [,, face.tensor] = util.correctFaceRotation(config.face.detector?.rotation, box, input, blazeface.size());
+
     face.boxScore = Math.round(100 * box.confidence) / 100;
     face.box = util.clampBox(box, input);
     face.boxRaw = util.getRawBox(box, input);

@@ -11,6 +11,7 @@
   
 ### **HEAD -> faceOnly** 2022/08/09 david.erenger@briteback.com
 
+- removed non-face stuff
 
 ### **origin/main** 2022/08/08 mandic00@live.com
 

@@ -10,7 +10,6 @@ import * as facemesh from './facemesh';
 import type { FaceResult } from '../result';
 import type { Tensor } from '../tfjs/types';
 import type { Human } from '../human';
-import { calculateFaceAngle } from './angles';
 
 export const detectFace = async (instance: Human /* instance of human */, input: Tensor): Promise<FaceResult[]> => {
   // run facemesh, includes blazeface and iris
@@ -26,7 +25,7 @@ export const detectFace = async (instance: Human /* instance of human */, input:
   if (!faces) return [];
   // for (const face of faces) {
   for (let i = 0; i < faces.length; i++) {
-    instance.analyze('Get Face');
+    // instance.analyze('Get Face');
 
     // is something went wrong, skip the face
     // @ts-ignore possibly undefied
@@ -36,12 +35,12 @@ export const detectFace = async (instance: Human /* instance of human */, input:
     }
 
     // calculate face angles
-    const rotation = faces[i].mesh && (faces[i].mesh.length > 200) ? calculateFaceAngle(faces[i], [input.shape[2], input.shape[1]]) : null;
+    // const rotation = faces[i].mesh && (faces[i].mesh.length > 200) ? calculateFaceAngle(faces[i], [input.shape[2], input.shape[1]]) : null;
 
-    instance.analyze('Finish Face:');
+    // instance.analyze('Finish Face:');
 
     // optionally return tensor
-    const tensor = instance.config.face.detector?.return ? tf.squeeze(faces[i].tensor) : null;
+    // const tensor = instance.config.face.detector?.return ? tf.squeeze(faces[i].tensor) : null;
     // dispose original face tensor
     tf.dispose(faces[i].tensor);
     // delete temp face image
@@ -51,12 +50,12 @@ export const detectFace = async (instance: Human /* instance of human */, input:
       ...faces[i],
       id: i,
     };
-    if (rotation) res.rotation = rotation;
-    if (tensor) res.tensor = tensor;
+    // if (rotation) res.rotation = rotation;
+    // if (tensor) res.tensor = tensor;
     faceRes.push(res);
-    instance.analyze('End Face');
+    // instance.analyze('End Face');
   }
-  instance.analyze('End FaceMesh:');
+  // instance.analyze('End FaceMesh:');
   if (instance.config.async) {
     if (instance.performance.face) delete instance.performance.face;
     if (instance.performance.age) delete instance.performance.age;

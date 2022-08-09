@@ -358,7 +358,7 @@ export class Human {
       const img = await image.process(input, this.config) as { canvas: AnyCanvas, tensor: Tensor };
       this.process = img;
       this.performance.inputProcess = this.env.perfadd ? (this.performance.inputProcess || 0) + Math.trunc(now() - timeStamp) : Math.trunc(now() - timeStamp);
-      this.analyze('Get Image:');
+      // this.analyze('Get Image:');
 
       if (!img.tensor) {
         if (this.config.debug) log('could not convert input to tensor');
@@ -375,7 +375,7 @@ export class Human {
       (this.performance.totalFrames as number)++;
       if (this.config.skipAllowed) this.performance.cachedFrames++;
       this.performance.cacheCheck = this.env.perfadd ? (this.performance.cacheCheck || 0) + Math.trunc(now() - timeStamp) : Math.trunc(now() - timeStamp);
-      this.analyze('Check Changed:');
+      // this.analyze('Check Changed:');
 
       // prepare where to store model results
       // keep them with weak typing as it can be promise or not
